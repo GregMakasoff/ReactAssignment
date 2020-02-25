@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Dropdown } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const AddToonForm = () => {
+const AddToonForm = (param) => {
   const [firstName, setFirstName] = useState(''); 
   const [lastName, setLastName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [gender, setGender] = useState('');
   const [pictureUrl, setPictureUrl] = useState('');
   const [votes, setVotes] = useState(0);
-  const [info, setInfo] = useState('');
-  const [option, setOption] = useState('');
-  var imageOptions = [];
-  var imageList;
+  const [toonPic, setToonPic] = useState({});
 
   const addToon = async () => {
-    const result = await fetch(`http://data.vncvr.ca/api/people/`, {
+    const result = await fetch(`https://api4u.azurewebsites.net/api/people`, {
       method: 'post',
       body: JSON.stringify({
         firstName,
@@ -32,27 +29,27 @@ const AddToonForm = () => {
   }
 
   useEffect(() => {
+    // this is where you get toonInfo data
     const fetchData = async () => {
-      const response = await fetch(`https://api4u.azurewebsites.net/api/pictures`);
-      const result = await response.json();
-      result.forEach(i => {
-        imageOptions.push(
-          {
-            key: i.name,
-            text: i.name,
-            value: i.url,
-            image: { avatar: true, src: i.url},
-          }
-        )
-      })
+        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
+        const body = await result.json();
+        setToonPic(body);
     }
     fetchData();
-    imageList = Object.keys(imageOptions).map((k) => {
-      return (
-        <option key={k} value={k}>{imageOptions[k]}</option>
-      )
-    }, this);
+    setPictureUrl("https://api4u.azurewebsites.net/images/flintstone/bambam.png"); ///default
   }, []);
+
+  // verifying data
+  var picInfos = toonPic;
+  if (param != undefined) {
+    picInfos = Object.values(toonPic).filter(p => p.name != param.exceptName);
+  }
+
+  const changeImg = async (url) => { 
+    setPictureUrl(url);
+    //document.getElementById("cartoonImg").src = url;
+    console.log(url);
+  }
 
 return (
     <React.Fragment>
@@ -81,17 +78,14 @@ return (
         </div>
         <div className="form-group">
           <label>Picture URL:</label>
-          <Dropdown
-            placeholder="Select an Image"
-            fluid
-            selection
-            rendered="true"
-            options={imageOptions}
-            onChange={(e, {value}) => setPictureUrl(value)}
-            
-          />
+          <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
+          onChange={(event) => changeImg(event.target.value)}>
+          {picInfos.map(instance => (
+          <option value={instance.url}>{instance.name}</option>
+        ))}
+      </select>
         </div>
-        <button onClick={() => addToon()} className="btn btn-success" >Add</button>
+        <Link to="/" onClick={() => addToon()} className="btn btn-success">Add</Link>
       </form>
     </div>
   </React.Fragment>

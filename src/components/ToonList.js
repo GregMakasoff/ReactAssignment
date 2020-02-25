@@ -8,7 +8,7 @@ const ToonList = (param) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await fetch(`http://data.vncvr.ca/api/people/`);
+            const result = await fetch(`https://api4u.azurewebsites.net/api/people`);
             const body = await result.json();
             setToonInfo(body);
         }
