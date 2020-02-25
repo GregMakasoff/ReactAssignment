@@ -90,7 +90,7 @@ const DeleteToonPage = ({ param }) => {
           </div>
           <div className="form-group">
             <label>Picture URL:</label>
-            <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
+            <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
             onChange={(event) => changeImg(event.target.value)}>
             {picInfos.map(instance => (
             <option value={instance.url}>{instance.name}</option>

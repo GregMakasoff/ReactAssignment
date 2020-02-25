@@ -15,7 +15,7 @@ const EditToonPage = ({ param }) => {
     
   
     const editToon = async () => {
-      const result = await fetch(`http://data.vncvr.ca/api/people/${id}`, {
+      const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`, {
         method: 'put',
         body: JSON.stringify({
           id: parseInt(id),
@@ -36,7 +36,7 @@ const EditToonPage = ({ param }) => {
   
     useEffect(() => {
       const fetchData = async () => {
-          const result = await fetch(`http://data.vncvr.ca/api/people/${id}`);
+          const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
           const body = await result.json();
           setToonInfo(body);
       }
@@ -92,7 +92,7 @@ const EditToonPage = ({ param }) => {
           </div>
           <div className="form-group">
             <label>Picture URL:</label>
-            <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
+            <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
             onChange={(event) => changeImg(event.target.value)}>
             {picInfos.map(instance => (
             <option value={instance.url}>{instance.name}</option>
