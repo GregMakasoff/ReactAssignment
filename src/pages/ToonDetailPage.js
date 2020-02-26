@@ -56,10 +56,6 @@ const ToonDetailPage = ({ match }) => {
                             <p><b>Occupation: </b>{toonInfo.occupation}</p>
                             <p><b>Gender: </b>{toonInfo.gender}</p>
                         </td>
-                        <td style={{ "width": "20%", "verticalAlign": "top" }}>
-                            <h3>Others:</h3>
-                            <ToonList exceptId={toonInfo.id} />
-                        </td>
                     </tr>
                 </tbody>
             </table>

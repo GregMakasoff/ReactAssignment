@@ -11,7 +11,7 @@ const AddToonForm = (param) => {
   const [toonPic, setToonPic] = useState({});
 
   const addToon = async () => {
-    const result = await fetch(`https://api4u.azurewebsites.net/api/people`, {
+    const result = await fetch(`http://data.vncvr.ca/api/people/`, {
       method: 'post',
       body: JSON.stringify({
         firstName,
@@ -31,7 +31,7 @@ const AddToonForm = (param) => {
   useEffect(() => {
     // this is where you get toonInfo data
     const fetchData = async () => {
-        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
+        const result = await fetch(`http://data.vncvr.ca/api/pictures`);
         const body = await result.json();
         setToonPic(body);
     }
@@ -72,13 +72,16 @@ return (
             value={occupation} onChange={(event) => setOccupation(event.target.value)} />
         </div>
         <div className="form-group">
-          <label>Gender:</label>
-          <input className="form-control" type="text" placeholder="Gender"
-            value={gender} onChange={(event) => setGender(event.target.value)} />
+          <label></label>
+            <label for="gender" style={{marginRight: 2.4 + 'em', "marginTop": "5px"}} >Gender:</label>
+            <select id="gender">
+              <option value="male">M</option>
+              <option value="female">F</option>
+            </select>
         </div>
         <div className="form-group">
           <label>Picture URL:</label>
-          <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
+          <select style={{"marginTop": "5px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
           onChange={(event) => changeImg(event.target.value)}>
           {picInfos.map(instance => (
           <option value={instance.url}>{instance.name}</option>

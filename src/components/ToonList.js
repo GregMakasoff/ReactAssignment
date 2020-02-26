@@ -8,7 +8,7 @@ const ToonList = (param) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await fetch(`https://api4u.azurewebsites.net/api/people`);
+            const result = await fetch(`http://data.vncvr.ca/api/people`);
             const body = await result.json();
             setToonInfo(body);
         }
@@ -23,11 +23,13 @@ const ToonList = (param) => {
         <Link to={`/add`} className="btn btn-success">Add</Link>
             {others.map((person, key) => (
                 <div>
-                    <Link key={key} to={`/detail/${person.id}`}>
-                        <h6>{person.id} {person.firstName} {person.lastName}</h6> 
+                    <Link key={key} to={`/detail/${person.id}`} style={{"display": "inline-block", "marginBottom": "25px"}}>
+                        <div>{person.id} {person.firstName} {person.lastName}</div> 
                     </Link>
+                    <div style={{"float": "right"}}>
                     <Link key={key} to={`/edit/${person.id}`} className="btn btn-primary">Edit</Link>
                     <Link key={key} to={`/del/${person.id}`} className="btn btn-danger">Delete</Link>
+                    </div>
                 </div>
             ))}
         </>

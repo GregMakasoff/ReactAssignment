@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const EditToonPage = ({ param }) => {
-    const id = param.params.id;
+const EditToonPage = ({ match }) => {
+    const id = match.params.id;
   
     const [firstName, setFirstName] = useState(''); 
     const [lastName, setLastName] = useState('');
@@ -15,7 +15,7 @@ const EditToonPage = ({ param }) => {
     
   
     const editToon = async () => {
-      const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`, {
+      const result = await fetch(`http://data.vncvr.ca/api/people/${id}`, {
         method: 'put',
         body: JSON.stringify({
           id: parseInt(id),
@@ -31,12 +31,11 @@ const EditToonPage = ({ param }) => {
         }
       });
       const body = await result.json();
-      window.location.reload(false);
     }
   
     useEffect(() => {
       const fetchData = async () => {
-          const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
+          const result = await fetch(`http://data.vncvr.ca/api/people/${id}`);
           const body = await result.json();
           setToonInfo(body);
       }
@@ -46,7 +45,7 @@ const EditToonPage = ({ param }) => {
   useEffect(() => {
     // this is where you get toonInfo data
     const fetchData = async () => {
-        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
+        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures`);
         const body = await result.json();
         setToonPic(body);
     }
@@ -56,8 +55,8 @@ const EditToonPage = ({ param }) => {
 
   // verifying data
   var picInfos = toonPic;
-  if (param != undefined) {
-    picInfos = Object.values(toonPic).filter(p => p.name != param.exceptName);
+  if (match != undefined) {
+    picInfos = Object.values(toonPic).filter(p => p.name != match.exceptName);
   }
 
   const changeImg = async (url) => { 
@@ -95,9 +94,9 @@ const EditToonPage = ({ param }) => {
             <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
             onChange={(event) => changeImg(event.target.value)}>
             {picInfos.map(instance => (
-            <option value={instance.url}>{instance.name}</option>
-          ))}
-        </select>
+                <option value={instance.url}>{instance.name}</option>
+            ))}
+            </select>
           </div>
           <Link to="/" onClick={() => editToon()} className="btn btn-primary">Confirm</Link>
         </form>

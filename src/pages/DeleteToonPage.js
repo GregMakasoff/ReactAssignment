@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const DeleteToonPage = ({ param }) => {
-    const id = param.params.id;
+const DeleteToonPage = ({ match }) => {
+    const id = match.params.id;
   
     const [firstName, setFirstName] = useState(''); 
     const [lastName, setLastName] = useState('');
@@ -54,8 +54,8 @@ const DeleteToonPage = ({ param }) => {
 
   // verifying data
   var picInfos = toonPic;
-  if (param != undefined) {
-    picInfos = Object.values(toonPic).filter(p => p.name != param.exceptName);
+  if (match != undefined) {
+    picInfos = Object.values(toonPic).filter(p => p.name != match.exceptName);
   }
 
   const changeImg = async (url) => { 
