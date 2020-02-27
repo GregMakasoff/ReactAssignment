@@ -12,10 +12,25 @@ const EditToonPage = ({ match }) => {
     const [votes, setVotes] = useState(0);
     const [toonInfo, setToonInfo] = useState('');
     const [toonPic, setToonPic] = useState({});
-    
+
+    const options = [
+      {
+        "text": "Male",
+        "value": "M"
+      },
+      {
+        "text": "Female",
+        "value": "F"
+      }
+    ];
+
+    const checkGender = () => {
+        if(match.params.gender === "M")
+          return;
+    }
   
     const editToon = async () => {
-      const result = await fetch(`http://data.vncvr.ca/api/people/${id}`, {
+      const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`, {
         method: 'put',
         body: JSON.stringify({
           id: parseInt(id),
@@ -35,7 +50,7 @@ const EditToonPage = ({ match }) => {
   
     useEffect(() => {
       const fetchData = async () => {
-          const result = await fetch(`http://data.vncvr.ca/api/people/${id}`);
+          const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
           const body = await result.json();
           setToonInfo(body);
       }
@@ -45,12 +60,12 @@ const EditToonPage = ({ match }) => {
   useEffect(() => {
     // this is where you get toonInfo data
     const fetchData = async () => {
-        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures`);
+        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
         const body = await result.json();
         setToonPic(body);
     }
     fetchData();
-    setPictureUrl("https://api4u.azurewebsites.net/images/flintstone/bambam.png"); ///default
+    setPictureUrl();//default
   }, []);
 
   // verifying data
@@ -86,12 +101,16 @@ const EditToonPage = ({ match }) => {
           </div>
           <div className="form-group">
             <label>Gender:</label>
-            <input className="form-control" type="text" placeholder="Gender"
-            defaultValue={toonInfo.gender} onChange={(event) => setGender(event.target.value)} />
+            <select id="gender" style={{"marginLeft": "10px", "marginTop": "15px"}} defaultValue={toonInfo.gender}
+            onChange={(event) => setGender(event.target.value)}>
+              {options.map(i => (
+                  <option value={i.value}>{i.text}</option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Picture URL:</label>
-            <select style={{"marginTop": "45px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
+            <select style={{"marginTop": "15px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
             onChange={(event) => changeImg(event.target.value)}>
             {picInfos.map(instance => (
                 <option value={instance.url}>{instance.name}</option>

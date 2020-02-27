@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 
-const AddToonForm = (param) => {
+const AddToon = ({ setToonInfo }) => {
   const [firstName, setFirstName] = useState(''); 
   const [lastName, setLastName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [gender, setGender] = useState('');
   const [pictureUrl, setPictureUrl] = useState('');
   const [votes, setVotes] = useState(0);
-  const [toonPic, setToonPic] = useState({});
 
   const addToon = async () => {
-    const result = await fetch(`https://api4u.azurewebsites.net/api/people`, {
+    const result = await fetch(`http://data.vncvr.ca/api/people/`, {
       method: 'post',
       body: JSON.stringify({
         firstName,
@@ -28,25 +26,7 @@ const AddToonForm = (param) => {
     const body = await result.json();
   }
 
-  useEffect(() => {
-    // this is where you get toonInfo data
-    const fetchData = async () => {
-        const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
-        const body = await result.json();
-        setToonPic(body);
-    }
-    fetchData();
-    setPictureUrl("https://api4u.azurewebsites.net/images/flintstone/bambam.png"); ///default
-  }, []);
-
-  // verifying data
-  var picInfos = toonPic;
-  if (param != undefined) {
-    picInfos = Object.values(toonPic).filter(p => p.name != param.exceptName);
-  }
-
-return (
-    <React.Fragment>
+  return (<React.Fragment>
     <div className="panel panel-default">
       <form>
         <h3>Add toon character</h3>
@@ -66,27 +46,21 @@ return (
             value={occupation} onChange={(event) => setOccupation(event.target.value)} />
         </div>
         <div className="form-group">
-          <label></label>
-            <label for="gender" style={{marginRight: 2.4 + 'em', "marginTop": "5px"}} >Gender:</label>
-            <select id="gender" onChange={(event) => setGender(event.target.value)}>
-              <option value="M">M</option>
-              <option value="F">F</option>
-            </select>
+          <label>Gender:</label>
+          <input className="form-control" type="text" placeholder="Gender"
+            value={gender} onChange={(event) => setGender(event.target.value)} />
         </div>
         <div className="form-group">
           <label>Picture URL:</label>
-          <select style={{"marginTop": "5px", "marginLeft": "10px"}} defaultValue="https://api4u.azurewebsites.net/images/flintstone/bambam.png" 
-          onChange={(event) => setToonPic(event.target.value)}>
-          {picInfos.map(instance => (
-          <option value={instance.url}>{instance.name}</option>
-        ))}
-      </select>
+          <input className="form-control" type="text" placeholder="Picture URL"
+            value={pictureUrl} onChange={(event) => setPictureUrl(event.target.value)} />
         </div>
-        <Link to="/" onClick={() => addToon()} className="btn btn-success">Add</Link>
+
+        <button onClick={() => addToon()} className="btn btn-success" >Add</button>
       </form>
     </div>
   </React.Fragment>
   )
 }
 
-export default AddToonForm;
+export default AddToon;

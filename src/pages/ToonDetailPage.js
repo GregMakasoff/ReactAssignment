@@ -27,7 +27,7 @@ const ToonDetailPage = ({ match }) => {
         // it is here that you set toonInfo data
         //setToonInfo({ votes: Math.ceil(Math.random() * 10) });
         const fetchData = async () => {
-            const result = await fetch(`http://data.vncvr.ca/api/people/${id}`);
+            const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
             const body = await result.json();
             setToonInfo(body);
         }

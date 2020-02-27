@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom';
 const ToonList = (param) => {
 
     const [toonInfo, setToonInfo] = useState({});
-
+    //http://data.vncvr.ca/api/people
+    //http://data.vncvr.ca/api/pictures
+    //https://api4u.azurewebsites.net/api/people
+    //https://api4u.azurewebsites.net/api/pictures
     useEffect(() => {
         const fetchData = async () => {
-            const result = await fetch(`http://data.vncvr.ca/api/people`);
+            const result = await fetch(`https://api4u.azurewebsites.net/api/people`);
             const body = await result.json();
             setToonInfo(body);
         }
