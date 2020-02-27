@@ -26,6 +26,7 @@ const AddToonForm = (param) => {
       }
     });
     const body = await result.json();
+    window.location.reload(false);
   }
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const AddToonForm = (param) => {
     }
     fetchData();
     setPictureUrl("https://api4u.azurewebsites.net/images/flintstone/bambam.png"); ///default
+    setGender("M"); //default
   }, []);
 
   // verifying data
@@ -44,6 +46,11 @@ const AddToonForm = (param) => {
   if (param != undefined) {
     picInfos = Object.values(toonPic).filter(p => p.name != param.exceptName);
   }
+  
+  // <select id="gender" onChange={(event) => setGender(event.target.value)}>
+  //             <option value="M">M</option>
+  //             <option value="F">F</option>
+  //           </select>
 
 return (
     <React.Fragment>
@@ -68,10 +75,10 @@ return (
         <div className="form-group">
           <label></label>
             <label for="gender" style={{marginRight: 2.4 + 'em', "marginTop": "5px"}} >Gender:</label>
-            <select id="gender" onChange={(event) => setGender(event.target.value)}>
-              <option value="M">M</option>
-              <option value="F">F</option>
-            </select>
+             <select id="gender" onChange={(event) => setGender(event.target.value)}>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
         </div>
         <div className="form-group">
           <label>Picture URL:</label>

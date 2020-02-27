@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const EditToonPage = ({ match }) => {
-    const id = match.params.id;
+    const id = Number(match.params.id);
   
     const [firstName, setFirstName] = useState(''); 
     const [lastName, setLastName] = useState('');
@@ -12,28 +12,12 @@ const EditToonPage = ({ match }) => {
     const [votes, setVotes] = useState(0);
     const [toonInfo, setToonInfo] = useState('');
     const [toonPic, setToonPic] = useState({});
-
-    const options = [
-      {
-        "text": "Male",
-        "value": "M"
-      },
-      {
-        "text": "Female",
-        "value": "F"
-      }
-    ];
-
-    const checkGender = () => {
-        if(match.params.gender === "M")
-          return;
-    }
   
     const editToon = async () => {
       const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`, {
         method: 'put',
         body: JSON.stringify({
-          id: parseInt(id),
+          id,
           firstName,
           lastName,
           occupation,
@@ -45,39 +29,35 @@ const EditToonPage = ({ match }) => {
           'Content-Type': 'application/json'
         }
       });
-      const body = await result.json();
+      //const body = await result.json();
+      //window.location.reload(false);
     }
-  
-    useEffect(() => {
-      const fetchData = async () => {
-          const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
-          const body = await result.json();
-          setToonInfo(body);
-      }
-      fetchData();
-  }, [id]);
 
   useEffect(() => {
     // this is where you get toonInfo data
-    const fetchData = async () => {
+    const fetchPics = async () => {
         const result = await fetch(`https://api4u.azurewebsites.net/api/pictures/`);
         const body = await result.json();
         setToonPic(body);
     }
+    fetchPics();
+    const fetchData = async () => {
+      const result = await fetch(`https://api4u.azurewebsites.net/api/people/${id}`);
+      const body = await result.json();
+      setToonInfo(body);
+      setFirstName(body.firstName);
+      setLastName(body.lastName);
+      setOccupation(body.occupation);
+      setGender(body.gender);
+      setPictureUrl(body.pictureUrl);
+    }
     fetchData();
-    setPictureUrl();//default
-  }, []);
+  }, [id]);
 
   // verifying data
   var picInfos = toonPic;
   if (match != undefined) {
     picInfos = Object.values(toonPic).filter(p => p.name != match.exceptName);
-  }
-
-  const changeImg = async (url) => { 
-    setPictureUrl(url);
-    //document.getElementById("cartoonImg").src = url;
-    console.log(url);
   }
   
     return (<React.Fragment>
@@ -101,23 +81,21 @@ const EditToonPage = ({ match }) => {
           </div>
           <div className="form-group">
             <label>Gender:</label>
-            <select id="gender" style={{"marginLeft": "10px", "marginTop": "15px"}} defaultValue={toonInfo.gender}
-            onChange={(event) => setGender(event.target.value)}>
-              {options.map(i => (
-                  <option value={i.value}>{i.text}</option>
-              ))}
-            </select>
+            <select id="gender" onChange={(event) => setGender(event.target.value)}>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
           </div>
           <div className="form-group">
             <label>Picture URL:</label>
             <select style={{"marginTop": "15px", "marginLeft": "10px"}} defaultValue={toonInfo.pictureUrl} 
-            onChange={(event) => changeImg(event.target.value)}>
+            onChange={(event) => setPictureUrl(event.target.value)}>
             {picInfos.map(instance => (
                 <option value={instance.url}>{instance.name}</option>
             ))}
             </select>
           </div>
-          <Link to="/" onClick={() => editToon()} className="btn btn-primary">Confirm</Link>
+          <div to="/" onClick={() => editToon()} className="btn btn-primary">Confirm</div>
         </form>
       </div>
     </React.Fragment>
