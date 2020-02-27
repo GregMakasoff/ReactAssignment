@@ -30,7 +30,7 @@ const EditToonPage = ({ match }) => {
         }
       });
       //const body = await result.json();
-      //window.location.reload(false);
+      window.location.reload(false);
     }
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const EditToonPage = ({ match }) => {
             ))}
             </select>
           </div>
-          <div to="/" onClick={() => editToon()} className="btn btn-primary">Confirm</div>
+          <Link to="/" onClick={() => editToon()} className="btn btn-primary">Confirm</Link>
         </form>
       </div>
     </React.Fragment>
